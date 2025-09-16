@@ -1,0 +1,62 @@
+//Srishti priya 
+//date 17-09-2025
+
+
+// N Stacks In An Array 
+/* Design a data structure to implement ‘N’ stacks using a single array of size ‘S’. It should support the following operations:  push(X, M): Pushes an element X into the Mth stack. */
+#include <bits/stdc++.h> 
+class NStack
+{
+    int *arr;               //yeh humara class tha pointing arr top next etc.
+    int *top;
+    int *next;
+    int n,s;
+    int freespot;
+
+public:
+    
+    NStack(int N, int S)        //constructor h humara initalise values in arr tp nxt
+    {
+        n=N;
+        s=S;
+        arr =new int[s];        //initalise arr with s
+        top = new int[n];  
+        next =new int[s];
+
+        for(int i = 0; i< n ; i++){          // initalise top with -1s
+            top[i]= -1;  
+    }
+        for(int i = 0; i<s ; i++){          // initalise next with i+1 
+            next[i]= i+1;
+    }
+        next[s-1]= -1;                      //next ka last index m -1 dala h
+        freespot = 0;                       //1st time freespot =0;
+    }
+
+    bool push(int x, int m)
+    {
+        if(freespot==-1) return false;      //agar freespot next ke last tak chala gaya //fun bool h so false return hua
+
+        int index  = freespot;               //step 1 starts 
+        freespot   = next[index];
+        arr[index] = x;
+        next[index]= top[m-1];
+        top[m-1 ]  = index;
+
+        return true;
+   }
+
+    int pop(int m)
+    {
+        if( top[m-1]==-1 ) return -1;
+
+        int index = top[m-1];           //do all things same but just reverse 
+        top[m-1] = next[index];
+        //x = arr[index];
+        next[index] = freespot;
+        freespot = index;
+
+        return arr[index];      //arr ka index return kr do
+
+    }
+};
