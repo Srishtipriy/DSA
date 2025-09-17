@@ -1,0 +1,57 @@
+// srishti Priya
+//18-9-2025
+
+# Design a stack that supports getMin() in O(1) time and O(1) extra space.
+Create a stack data structure that allows operations such as push (adding an element), pop (removing the top element), top (retrieving the top element), and also provides a way to retrieve the minimum element in 
+constant time.
+
+class SpecialStack {
+    stack<int> s;
+    int mini;
+
+    public:
+    void push(int data) {                          //    5 3 8 2 4
+        
+        if(s.empty()) {                          //empty stack h so new data = mini
+            s.push(data);
+            mini = data;
+
+        }
+        else{
+            if(data < mini){                     // if in case data smaller h mini se        // 3<5
+                int val= 2* data- mini;          //formula used 
+                s.push(val);
+                mini = data;                     // mini = 3
+            }
+            else{s.push(data);    }              // 5 1 8 1 4 
+        }
+    }
+
+    void pop() {
+        if(s.empty())   return ;                      
+        int curr = s.top();                    //curr value woh hoti h jo new data stack m aaye
+        s.pop();
+        
+        if(curr < mini){
+        mini = 2 * mini - curr;
+        }
+    }
+
+    int top() {
+        if(s.empty()) return -1;
+        
+        int curr = s.top();
+        if(curr < mini){            //// encoded value hai yaha so  actual top = mini
+
+            return mini;
+        }
+        else {return curr; } 
+
+    }
+
+    int getMin() {
+        
+        if(s.empty()) return -1;
+        else return mini;
+    }  
+};
