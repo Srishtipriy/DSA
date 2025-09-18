@@ -1,0 +1,62 @@
+// srishti priya
+//19- 09- 2025
+
+#Implement a Queue :
+
+#include <bits/stdc++.h> 
+#include<queue>
+using namespace std;
+
+class Queue {
+    int *arr;          // dynamic array
+    int frontt, rear;   // index of front and last ele
+    int size;          // capacity of queue
+
+public:
+    Queue() {
+        size = 10001;                           // given constraint (enough for testcases) 
+        arr = new int[size];                    //inside constructor
+        frontt = 0;
+        rear = 0;
+    }
+
+    bool isEmpty() {
+        return (frontt == rear);
+    }
+
+    void enqueue(int data) {
+        if (rear == size) {                      // Queue is full
+ 
+            cout << "Queue is Full\n";
+        } 
+        else {
+            arr[rear] = data;
+            rear++;
+        }
+    }
+
+    int dequeue() {
+        if (frontt == rear) {                    // Queue is empty 
+            return -1;
+        } 
+        else {
+            int ans = arr[frontt];
+            arr[frontt] = -1;                    // optional to save pop value
+            frontt++;
+
+            if (frontt == rear) {                 // Reset queue to empty state
+                frontt = 0;
+                rear = 0;
+            }
+            return ans;
+        }
+    }
+
+    int front() {
+        
+        if (frontt == rear) {
+            return -1;
+        }
+        return arr[frontt];
+    }
+};
