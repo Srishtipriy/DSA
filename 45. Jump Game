@@ -1,0 +1,34 @@
+//srishti 
+//20-09-2025
+
+#min jumps to reach the end of stairs. Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i + j) where:
+Input: nums = [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+
+class Solution {
+public:
+int solve(vector<int>& nums, int i, int n) {
+        if (i >= n - 1) return 0;                       //the size exceed ho jaye
+
+        if (nums[i] == 0) return INT_MAX;               //cost has 0 as ele in block
+        int minSteps = INT_MAX;
+
+        for (int jump = 1; jump <= nums[i]; jump++) {           // Try all jumps from 1 to nums[i]
+        
+            int next = solve(nums, i + jump, n);
+            if (next != INT_MAX) 
+            {
+                minSteps = min(minSteps, 1 + next);
+            }
+        }
+        return minSteps;
+    }
+    int jump(vector<int>& cost) {
+        int n = cost.size();
+        int ans = solve( cost, 0, n );
+        return ans == INT_MAX ? -1 : ans;
+    }
+};
+
