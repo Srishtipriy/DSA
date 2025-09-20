@@ -1,0 +1,36 @@
+// srishti priya
+//21-09-2025
+
+# Min Cost Climbing Stairs You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you can either climb one or two steps. You can either start from the 
+step with index 0, or the step with index 1. Return the minimum cost to reach the top of the floor.
+Input: cost = [10,15,20]
+Output: 15
+Explanation: You will start at index 1.
+- Pay 15 and climb two steps to reach the top.
+The total cost is 15.
+
+class Solution {
+public:
+int solve(vector<int>& nums, int i, int n) {
+        if (i >= n - 1) return 0;                       //the size exceed ho jaye
+
+        if (nums[i] == 0) return INT_MAX;               //cost has 0 as ele in block
+        int minSteps = INT_MAX;
+
+        for (int jump = 1; jump <= nums[i]; jump++) {           // Try all jumps from 1 to nums[i]
+        
+            int next = solve(nums, i + jump, n);
+            if (next != INT_MAX) 
+            {
+                minSteps = min(minSteps, 1 + next);
+            }
+        }
+        return minSteps;
+    }
+    int minCostClimbingStairs(vector<int>& cost) {
+        int n = cost.size();
+        int ans = solve( cost, 0, n );
+        return ans == INT_MAX ? -1 : ans;
+    }
+};
+
