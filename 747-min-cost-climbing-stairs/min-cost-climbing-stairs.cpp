@@ -1,21 +1,21 @@
 class Solution {
 public:
-    int solve(vector<int>& cost, int n, vector<int>& dp) {
-        if(n ==1)     return cost[1];                                      //base cases
-
-        if(n ==0)      return  cost[0];
+    int solve(vector<int>& cost, int i, vector<int> & dp) {
+        if (i >= cost.size()) return 0;   // Top par pahunch gaye
         
-        if (dp[n] != -1 ){                                          //dp addition step 3
-            return dp[n];
-        }
-        dp[n] = cost[n] + min( solve(cost, n-1, dp), solve(cost, n-2 ,dp ) );           //step 2
-        return dp[n];
+        if(dp[i] != -1)  return dp[i];
+
+        int one = cost[i] + solve(cost, i+1, dp);       // Ek step aur do step dono try karo
+        int two = cost[i] + solve(cost, i+2, dp);
+
+        dp[i] =min(one, two);
+        return dp[i];
     }
 
     int minCostClimbingStairs(vector<int>& cost) {
-        int n =cost.size();
-        vector<int> dp(n+1 , -1);
-        int ans = min( solve(cost, n-1 ,dp), solve(cost, n-2, dp) );
-        return ans;     // Tum 0 ya 1 step se start kar sakte ho
+        int n= cost.size();
+        vector<int> dp (n+1, -1);
+        int ans =min(solve(cost, 0 ,dp), solve(cost, 1,dp));     // Tum 0 ya 1 step se start kar sakte ho
+        return ans;
     }
 };
