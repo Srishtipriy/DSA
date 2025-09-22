@@ -1,0 +1,24 @@
+//Srishti priya 
+//22-09-2025
+
+#Max Sum of Adjacent elements 
+INPUT :  nums = {3, 2, 7, 10};
+OUTPUT : 13                          Pick 3 and 10 → sum = 13   Cannot pick 7 along with 10 because they are adjacent. similar to house robber.
+
+int solve(vector<int>& nums, int i, vector<int>& dp) {
+    if(i < 0) return 0;
+    if(i == 0) return nums[0];
+
+    if(dp[i] != -1) return dp[i];
+
+    int include = nums[i] + solve(nums, i - 2, dp);
+    int exclude = solve(nums, i - 1, dp);
+
+    return dp[i] = max(include, exclude);
+}
+
+int maxNonAdjacentSum(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n, -1);
+    return solve(nums, n - 1, dp);
+}
