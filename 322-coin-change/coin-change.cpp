@@ -25,3 +25,18 @@ public:
 
     }
 };
+/*int main(){
+    int n;
+    cout<<"enter the n value size of array:";
+    cin>> n;
+
+    vector<int>nums(n);
+    cout<<"enter elements";
+    for(int i = 0; i< n ; i++){
+        cin>> nums[i];
+    }
+
+    int ans = maxNonAdjacentSum(nums);
+    cout<< "max sum of nonadj ele is:"<< ans << endl ; 
+    return 0;
+}*/
