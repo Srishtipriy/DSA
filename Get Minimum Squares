@@ -1,0 +1,38 @@
+//srishti priya
+//29-09-2025
+
+#Get Minimum Squares
+Given a number n, find the minimum number of perfect squares that sum up to n.
+For example:
+n = 6 → 3 (2² + 1² + 1²)
+n = 12 → 3 (4² + 4² + 4²)
+n = 13 → 2 (9 + 4)
+
+-------------------code------------------------------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(int n, vector<int> &dp) {
+    if (n == 0) return 0;   // base case
+    if (dp[n] != -1) return dp[n];
+    
+    int ans = n; // max possible = n times 1²
+    for (int i = 1; i * i <= n; i++) {
+        int square = i * i;
+        ans = min(ans, 1 + solve(n - square, dp));
+    }
+    return dp[n] = ans;
+}
+
+int minSquares(int n) {
+    vector<int> dp(n + 1, -1);
+    return solve(n, dp);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << "Minimum squares needed = " << minSquares(n) << endl;
+    return 0;
+}
