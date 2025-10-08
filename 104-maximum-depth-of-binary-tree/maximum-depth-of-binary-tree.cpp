@@ -14,6 +14,9 @@ public:
     int maxDepth(TreeNode* root) {
         if (root == nullptr)
             return 0;
+            
+        if(root->left == NULL && root->right == NULL)       // If the both subtrees are empty...
+            return 1;
 
         int leftDepth = maxDepth(root->left);
         int rightDepth = maxDepth(root->right);
