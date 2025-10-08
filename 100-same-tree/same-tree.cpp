@@ -20,7 +20,7 @@ public:
         bool L = isSameTree(p->left, q->left);
         bool R = isSameTree(p->right, q->right);
 
-        bool currval = p->val == q->val;
+        bool currval = p->val == q->val;            //bool T/F? when it gives ans of p->val and q->val
         if( L && R && currval){
             return true;
         }
