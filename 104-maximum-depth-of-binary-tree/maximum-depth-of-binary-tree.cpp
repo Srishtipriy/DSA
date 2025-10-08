@@ -11,16 +11,17 @@
  */
 class Solution {
 public:
+     void helper(TreeNode* root, int depth, int& ans) {
+        if (root == nullptr)     return;
+
+        ans = max(ans, depth);
+        helper(root->left, depth + 1, ans);
+        helper(root->right, depth + 1, ans);
+    }
+
     int maxDepth(TreeNode* root) {
-        if (root == nullptr)
-            return 0;
-            
-        if(root->left == NULL && root->right == NULL)       // If the both subtrees are empty...
-            return 1;
-
-        int leftDepth = maxDepth(root->left);
-        int rightDepth = maxDepth(root->right);
-
-        return 1 + max(leftDepth, rightDepth);
+        int ans = 0;
+        helper(root, 1, ans);
+        return ans;
     }
 };
