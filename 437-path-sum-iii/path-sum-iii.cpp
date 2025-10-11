@@ -11,28 +11,22 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root, int targetSum, int &count , vector<int> path){
-        if(root==NULL)      return;
+    int ans=0;
 
-        path.push_back(root->val);
+    void dfs(TreeNode* root, long long sum){
+        if(!root) return;               //if root is null
+        if(root->val==sum) ans++;       //root value alone is equal to ans
 
-        solve(root->left, targetSum, count , path);
-        solve(root->right, targetSum, count , path);      //yaha tak bas vector bana h count add niche hoga
-
-        int size= path.size();
-        long long sum = 0;
-        for(int i= size-1; i>=0; i--){
-            sum += path[i];
-            if(sum== targetSum){
-                count++;                                  //jab bhi sum mil jaye tb count ++ karo
-            }
-            path.pop_back();
-        }
+        dfs( root->left, sum-root->val );
+        dfs( root->right, sum-root->val );
     }
-    int pathSum(TreeNode* root, int targetSum) {
-        vector<int> path;
-        int count = 0;
-        solve(root, targetSum , count , path);
-        return count;
+
+    int pathSum(TreeNode* root, int sum) {
+        if(root){
+            dfs ( root,sum );                          //count paths starting at curr node
+            pathSum( root->left, sum );                // check paths starting in left subtree
+            pathSum( root->right, sum );
+        }
+        return ans;
     }
 };
