@@ -9,35 +9,28 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
- //preorder = root - left - right
- //inorder  = left - root - right
 class Solution {
+    int pre_index = 0;
+    unordered_map<int,int> indices;
 public:
-    int findposition(vector<int>&inorder, int element, int n){
-        for(int i=0; i<n; i++){
-            if(inorder[i] == element)               return i;
-        }
-        return -1;
-    }
-    TreeNode* solve( vector<int>& preorder, vector<int>& inorder, int&preOindex, int inorderstart, int inorderend,int n) {
-        if(preOindex == n || inorderstart > inorderend){
-            return NULL;
-        }
-        int element = preorder[preOindex++];
-        TreeNode* nroot = new TreeNode(element);
-        int position = findposition(inorder, element, n);
+    TreeNode* dfs(vector<int>& preorder, int left, int right){
 
-        //recursive calls
-        nroot->left = solve(preorder,inorder, preOindex, inorderstart , position-1 , n);
-        nroot->right = solve(preorder,inorder, preOindex, position+1 , inorderend , n);
+        if( left>right )          return NULL;
 
-        return nroot;
+        int rootval = preorder[pre_index++];
+        TreeNode* root = new TreeNode(rootval);
 
+        int mid = indices[rootval];      //indices hashmap to find where this root is located in the inorder array
+
+        root->left = dfs(preorder, left, mid-1);
+        root->right = dfs(preorder, mid+1, right);
+
+        return root;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int preOindex = 0;
-        int n = preorder.size();
-        TreeNode* ans= solve(preorder, inorder, preOindex, 0, n-1, n);          //0 is inoindex
-        return ans;
+        for(int i = 0 ; i<inorder.size(); i++){
+            indices[inorder[i]] = i;                        // store indices for O(1) lookup
+        }        
+        return dfs(preorder, 0, inorder.size()-1);
     }
 };
