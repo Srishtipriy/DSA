@@ -18,12 +18,16 @@ public:
         TreeNode* leftans = lowestCommonAncestor(root->left, p, q );
         TreeNode* rightans = lowestCommonAncestor(root->right, p, q );
 
-        if(leftans!= NULL && rightans!= NULL)       return root;  //jab dono m value h iska mtb common node h yeh 
+        return !leftans ? rightans : !rightans ? leftans : root;
 
-        if(leftans== NULL && rightans!= NULL)       return rightans;
-
-        if(leftans!= NULL && rightans== NULL)       return leftans;
-
-        else return NULL;
     }
 };
+        /*
+            !leftans → means “if leftans is NULL”. yes then right print kro usme value hogi
+            if leftans is not null ---> and rightans is null----> leftans.
+            if leftans is not null ---> and rightans is not null ----> root.
+
+            if (leftans && rightans) return root;
+            if (leftans) return leftans;
+            if (rightans) return rightans;
+            return NULL;                                                */
