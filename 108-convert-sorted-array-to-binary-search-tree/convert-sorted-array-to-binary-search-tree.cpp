@@ -10,21 +10,23 @@
  * };
  */
 class Solution {
-public:
-    TreeNode* helper(vector<int>& nums, int left, int right) {
+private:
+    TreeNode* MakeBST(vector<int>& nums, int min, int max)
+    {
+        if(min>max)
+            return nullptr;
 
-        if (left > right)            return NULL;
+        int mid = min + (max-min)/2;
+        TreeNode* node = new TreeNode(nums[mid]);
 
-        int mid = left + (right - left) / 2;
-
-        TreeNode* root = new TreeNode(nums[mid]);
-
-        root->left = helper(nums, left, mid - 1);
-        root->right = helper(nums, mid + 1, right);
-
-        return root;
+        node->left = MakeBST(nums, min, mid-1);   
+        node->right = MakeBST(nums, mid+1, max);  
+        
+        return node;
     }
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return helper(nums, 0, nums.size() - 1);
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) 
+    {
+        return MakeBST(nums, 0, nums.size()-1);    
     }
 };
