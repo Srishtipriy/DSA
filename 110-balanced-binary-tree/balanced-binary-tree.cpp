@@ -13,15 +13,15 @@ class Solution {
 public:
     pair<bool,int > isBalancedfast(TreeNode* root){
         if(root== NULL){
-            pair<bool, int> p =make_pair(true , 0);
-            return p;
+            pair<bool, int> p =make_pair(true , 0);                //bool=first-> is subtree balanced?
+            return p;                                              //int second->Height of subtree
         }
         pair<bool , int> left = isBalancedfast(root->left);
-        pair<bool , int> right = isBalancedfast(root->right);
+        pair<bool , int> right = isBalancedfast(root->right);               
 
         bool leftans = left.first;
         bool rightans = right.first;
-        bool diff = abs(left.second - right.second) <=1;
+        bool diff = abs(left.second - right.second) <=1;           // bas iss line ke liye ans.second ka use h 
 
         pair< bool , int> ans;
         ans.second = max(left.second , right.second)+ 1;
