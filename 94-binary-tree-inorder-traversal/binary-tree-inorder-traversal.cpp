@@ -1,26 +1,34 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    void solve(TreeNode* root, vector<int>& ans){
-        if(root == NULL)
-            return ;
-        solve(root->left, ans);
-        ans.push_back(root->val);
-        solve(root->right, ans);
+    vector<int> getInorder(TreeNode* root) {       
+        vector<int> inorder;                       
+        TreeNode* cur = root;
+
+        while (cur != NULL) {
+            if (cur->left == NULL) {
+                inorder.push_back(cur->val);       // CHANGED: same action, name changed
+                cur = cur->right;
+            } else {
+                TreeNode* prev = cur->left;
+                while (prev->right && prev->right != cur) {
+                    prev = prev->right;
+                }
+
+                if (prev->right == NULL) {
+                    prev->right = cur;             //from here push_back moved down
+                    cur = cur->left;
+                } else {
+                    prev->right = NULL;
+                    inorder.push_back(cur->val);   // CHANGED: moved push_back here (visit AFTER restoring link)
+                    cur = cur->right;
+                }
+            }
+        }
+
+        return inorder;                            
     }
-    vector<int> inorderTraversal(TreeNode* root) {
-      vector<int> ans;
-      solve(root, ans);
-      return ans;
+
+    vector<int> inorderTraversal(TreeNode* root) { 
+        return getInorder(root);                   
     }
 };
