@@ -18,7 +18,7 @@ public:
         in.push_back(root->val);
         inorder(root->right , in);
     }
-    TreeNode * inordertoBST( int s , int e, vector<int> in){
+    TreeNode * inordertoBST( int s , int e, vector<int>& in){
         if(s>e)     return NULL;                              //take mid and divide
 
         int mid = (s+e) /2;
