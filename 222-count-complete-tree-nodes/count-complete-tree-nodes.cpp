@@ -1,5 +1,5 @@
 /**
- * Definition for a binary tree node.
+ * Definition for root binary tree node.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -11,17 +11,17 @@
  */
 class Solution {
 public:
-    int countNodes(TreeNode* a) {
+    int countNodes(TreeNode* root) {
         queue<TreeNode* > q;
-        q.push(a);
+        q.push(root);
         int cnt = 0;
 
         while(q.front()){
-            a = q.front();
+            root = q.front();
             q.pop();
             cnt++;
-            q.push(a->left);
-            q.push(a->right);
+            q.push(root->left);
+            q.push(root->right);
         }
         return cnt;
     }
