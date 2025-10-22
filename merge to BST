@@ -1,0 +1,69 @@
+//srishti priya
+//22-10-2025
+
+//merge to BST--> take preorder of 2 bst then merge inorders then do convert to bst
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void inorder(TreeNode* root, vector<int>& a){
+        if(root == NULL)    return;
+
+        inorder(root->left,a);
+        a.push_back(root->val);
+        inorder(root->right,a);
+
+    }
+    vector<int> merge(vector<int>& p ,vector<int>& q){
+
+        vector<int> gg;                      
+        gg.reserve(p.size() + q.size()); 
+        int i=0 , j=0 ;
+
+        while( i<p.size() && j<q.size() ){
+            if(p[i] < q[j])
+                gg.push_back(p[i++]);
+            else
+                gg.push_back(q[j++]);
+        }
+        while(i < p.size()){
+            gg.push_back(p[i++]);
+        }
+        while(j < q.size()){
+            gg.push_back(q[j++]);
+        }
+        return gg;
+    }
+    TreeNode* inordertoBST(vector<int>& nums, int left, int right) {
+        if (left > right)   return NULL;
+
+        int mid = left + (right - left) / 2;
+        TreeNode* root = new TreeNode(nums[mid]);
+
+        root->left = inordertoBST(nums, left, mid - 1);
+        root->right = inordertoBST(nums, mid + 1, right);
+
+        return root;
+    }
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        vector<int> p ;
+        inorder(root1, p);
+        vector<int> q ;
+        inorder(root2, q);
+
+        vector<int> ans = merge(p,q);
+
+        return inordertoBST(ans,0 ,ans.size()-1);
+
+    }
+};
