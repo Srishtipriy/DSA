@@ -20,21 +20,20 @@ public:
 
 class Solution {
 public:
-    vector<int> ans;
-    void postOrder(Node* root){
-    if(root == NULL)    return ;
-
-    for(auto child : root->children ){
-        postOrder(child);
-        ans.push_back(child->val);
+    void dfs(Node* node, vector<int>& result) {
+            if (node == nullptr) return;
+            
+            for (Node* child : node->children) {
+                dfs(child, result);
+            }
+            result.push_back(node->val);
         }
-    }
+
+ 
     vector<int> postorder(Node* root) {
-        if(root == NULL)    return{};
-
-        postOrder(root);
-        ans.push_back(root->val);
-        return ans;
-        }
-    
+        vector<int> result;
+        dfs(root, result);
+        return result;
+        
+    }
 };
