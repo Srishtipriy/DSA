@@ -20,20 +20,19 @@ public:
 
 class Solution {
 public:
-    void dfs(Node* node, vector<int>& result) {
-            if (node == nullptr) return;
-            
-            for (Node* child : node->children) {
-                dfs(child, result);
-            }
-            result.push_back(node->val);
-        }
+    void dfs(Node* root,vector<int> &res){
+        if(root==NULL) return ;
 
- 
+        for(Node* child : root->children){
+            dfs(child,res);
+        }
+        res.push_back(root->val);
+
+    }
     vector<int> postorder(Node* root) {
-        vector<int> result;
-        dfs(root, result);
-        return result;
+        vector<int> res;
+        dfs(root,res);
+        return res;
         
     }
 };
