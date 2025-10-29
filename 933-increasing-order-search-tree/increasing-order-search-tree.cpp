@@ -11,33 +11,19 @@
  */
 class Solution {
 public:
-    // Collect inorder traversal values
-    void inorder(TreeNode* root, vector<int>& ans) {
-        if (root == nullptr) return;
+  void inorder(TreeNode*& ans, TreeNode* root) {
+        if (root== NULL) return;
 
-        inorder(root->left, ans);
-        ans.push_back(root->val);
-        inorder(root->right, ans);
+        inorder(ans, root->left);
+        ans->right = new TreeNode(root->val);
+        ans = ans->right;
+        inorder(ans, root->right);
     }
-
-    // Build right-skewed BST from inorders
-    TreeNode* makeBST(const vector<int>& ans) {
-        if (ans.empty()) return nullptr;
-
-        TreeNode* newRoot = new TreeNode(ans[0]);
-        TreeNode* curr = newRoot;
-
-        for (int i = 1; i < ans.size(); i++) {
-            curr->right = new TreeNode(ans[i]);
-            curr = curr->right;
-        }
-
-        return newRoot;
-    }
-
     TreeNode* increasingBST(TreeNode* root) {
-        vector<int> ans;
-        inorder(root, ans);      // Step 1: Get inorder values
-        return makeBST(ans);     // Step 2: Build new tree
+        TreeNode* temp;
+        TreeNode* ans = new TreeNode();
+        temp = ans;
+        inorder(ans, root);
+        return temp->right;
     }
 };
