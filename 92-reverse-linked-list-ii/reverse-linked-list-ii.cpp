@@ -10,17 +10,22 @@
  */
 class Solution {
 public:
-    ListNode* reverseLL(ListNode* prev, int count){
-        ListNode* curr = prev->next;
-        ListNode* temp = NULL;
+    ListNode* reverseLL(ListNode* prev, ListNode* head , int count){         //reverse LL
+        ListNode* preV = nullptr;
+        ListNode* curr = head;
 
-        for(int i=0; i< count; i++){
-            temp = curr->next;
-            curr->next = temp->next;
-            temp->next = prev->next;
-            prev->next = temp;
+        for(int i=0; i < count && curr != nullptr ; i++){
+            ListNode* temp = curr->next;   // store next node
+            curr->next = preV;             // reverse pointer
+            preV = curr;                   // move preV forward
+            curr = temp;                   // move curr forward
         }
-        return curr;
+
+        // reconnect:
+        prev->next = preV;  // new head of reversed segment
+        head->next = curr;  // tail connects to the remaining list
+
+        return preV;
     }
     ListNode* reverseBetween(ListNode* head, int left, int right) {
         if( !head  || left == right)        return head;
@@ -30,10 +35,12 @@ public:
 
         ListNode* prev = Dummy;
 
-        for(int i= 1; i< left; i++){        // Move prev to the node before 'left'
+        // Move prev to the node before 'left'
+        for(int i= 1; i< left; i++){        
             prev = prev->next;
         }
-        reverseLL(prev, right-left);
+        //But segment to reverse starts at prev->next, not at the original head
+        reverseLL( prev, prev->next, right-left+1 );  
 
         return Dummy->next;
     }
