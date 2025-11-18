@@ -10,38 +10,49 @@
  */
 class Solution {
 public:
-    ListNode* reverseLL(ListNode* prev, ListNode* head , int count){         //reverse LL
-        ListNode* preV = nullptr;
-        ListNode* curr = head;
-
-        for(int i=0; i < count && curr != nullptr ; i++){
-            ListNode* temp = curr->next;   // store next node
-            curr->next = preV;             // reverse pointer
-            preV = curr;                   // move preV forward
-            curr = temp;                   // move curr forward
-        }
-
-        // reconnect:
-        prev->next = preV;  // new head of reversed segment
-        head->next = curr;  // tail connects to the remaining list
-
-        return preV;
-    }
     ListNode* reverseBetween(ListNode* head, int left, int right) {
-        if( !head  || left == right)        return head;
+        if (!head || left == right) return head;
 
-        ListNode* Dummy = new ListNode(0);
-        Dummy->next = head;
+        // Create dummy node
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* prev = dummy;
 
-        ListNode* prev = Dummy;
-
-        // Move prev to the node before 'left'
-        for(int i= 1; i< left; i++){        
+        // Step 1: Move `prev` to the node before `left`
+        for (int i = 1; i < left; i++) {
             prev = prev->next;
         }
-        //But segment to reverse starts at prev->next, not at the original head
-        reverseLL( prev, prev->next, right-left+1 );  
 
-        return Dummy->next;
+        // Step 2: Start reversing between left and right
+        ListNode* curr = prev->next;
+        ListNode* next = nullptr;
+
+        for (int i = 0; i < right - left; i++) {
+            next = curr->next;                //stores value 3
+            curr->next = next->next;          // 2 connects to 4 and no. 3 is deteached floats
+            next->next = prev->next;          //connect 3 before 2
+            prev->next = next;                //move prev to 3 
+        }
+
+        // Step 3: Return the updated head      curr still at 2
+        return dummy->next;
     }
 };
+
+/*   inside for loop    curr->next = next->next;  
+                        1 → 2 → 4 → 5
+                        next->next = prev->next;
+                        3 → 2 → 4 → 5
+                        prev->next = next;
+                        1 → 3 → 2 → 4 → 5
+                                ↑
+                               curr (still at 2)
+    iteration 2:
+                        prev
+                        ↓
+                        1 → 3 → 2 → 4 → 5
+                                ↑
+                                curr
+                        next = curr->next = 4
+                        detach next : 2 → 5
+                        insert 4 after prev: 1 → 4 → 3 → 2 → 5     */
