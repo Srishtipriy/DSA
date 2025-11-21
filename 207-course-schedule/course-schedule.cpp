@@ -1,27 +1,27 @@
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    bool canFinish(int vertices, vector<vector<int>>& EdgesSet) {
 
         // adjacency list
         unordered_map<int, list<int>> adj;
-        for (auto &it : prerequisites) {
+        for (auto &it : EdgesSet) {
             int course = it[0];
-            int prereq = it[1];
-            adj[prereq].push_back(course);
+            int one_edge = it[1];
+            adj[one_edge].push_back(course);
         }
 
         // indegree array
-        vector<int> indegree(numCourses, 0);
+        vector<int> indegree(vertices, 0);
 
         // fill indegrees
-        for (auto &p : prerequisites) {
+        for (auto &p : EdgesSet) {
             int course = p[0];
             indegree[course]++;  
         }
 
         // queue for all nodes with indegree = 0
         queue<int> q;
-        for (int i = 0; i < numCourses; i++) {
+        for (int i = 0; i < vertices; i++) {
             if (indegree[i] == 0) {
                 q.push(i);
             }
@@ -43,11 +43,11 @@ public:
             }
         }
 
-        return count == numCourses;
+        return count == vertices;
     }
 };
 /*
-prerequisites = {
+prerequisites\ edgeset = {
     {1, 0},
     {2, 1},
     {3, 2}
