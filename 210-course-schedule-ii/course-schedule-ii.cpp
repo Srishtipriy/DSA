@@ -1,70 +1,53 @@
 class Solution {
 public:
-    bool isCycleDFS(int src, vector<bool> &vis, vector<bool> &recPath,           
-        vector<vector<int>>&edges){
-            vis[src] = true;
-            recPath[src] = true;
+    vector<int> findOrder(int num, vector<vector<int>>& preq) {
 
-            for(int i =0; i<edges.size(); i++){ //  [[1,0],[2,4],[1,3]] type h edges
-                int v = edges[i][0];        //reveres order h egde set mai
-                int u = edges[i][1];
+        vector<int> degree(num, 0);             // indegree array: how many incoming edges each node has
+        vector<vector<int>> adj(num);           // adjacency list: node -> list of nodes reachable from it (outgoing edges)
+        vector<int> answer;                     // stores final topological order
 
-                if(src == u){
-                    if(!vis[v]){
-                        if(isCycleDFS(v, vis ,recPath, edges)) 
-                            return true;        //agar recr ke andr loop mili
-                    }
-                    else if(recPath[v]){    //if yes visited && repath is also T
-                        return true;        //BACK EDGE->cycle
-                    }
-                }
-            }
-            recPath[src] = false;
-            return false;
+        // Build graph using edges
+        for(int i = 0; i < preq.size(); i++)
+        {
+            int u = preq[i][0];                 // destination node
+            int v = preq[i][1];                 // source node
+
+            adj[v].push_back(u);                // edge v → u
+            degree[u]++;                        // u has one more incoming edge
         }
-    void Toposort(int src, vector<bool> &vis, stack<int>& s, vector<vector<int>>&edges){
-        vis[src] = true;
-         
-         for(int i =0; i<edges.size(); i++){
-                int v = edges[i][0];        //reveres order h egde set mai
-                int u = edges[i][1];
 
-                if(src == u){
-                    if(!vis[v]){
-                        Toposort(v, vis, s, edges);
-                    }
-                }
+        queue<int> q;
+
+        // Push all nodes with zero incoming edges
+        for(int i = 0; i < num; i++)
+        {
+            if(degree[i] == 0)
+                q.push(i);
         }
-         s.push(src);   //by dfs topo order
-    }
-    vector<int> findOrder(int n, vector<vector<int>>& edges) {
-        vector<bool> vis(n, false);
-        vector<bool> recPath(n, false);
-        vector<int> ans;
 
-        for(int i =0; i<n; i++){    //sare vertices k liye run kro
-            if(!vis[i]){
-                if(isCycleDFS( i, vis, recPath, edges )){   //if cycle found
-                    return ans;     //return empty vector task tha ans bhi empty h
-                }
-            }
-        }
-        //if is loop ke baad bhi koi cycle exist nhi karti
-        //topo sort
-        stack<int> s;
-        //now reinitalise vis vector with false
-        vis.assign(n, false);
+        // Kahn's algorithm (BFS topological sort)
+        while(!q.empty()){
+            int fr = q.front();                 // node with no incoming edges
+            answer.push_back(fr);               // add to topological order
+            q.pop();
 
-        for(int i=0; i<n; i++){
-            if(!vis[i]){
-                Toposort(i, vis, s, edges);
+            // Remove outgoing edges from this node
+            for(auto it : adj[fr])
+            {
+                degree[it]--;                   // remove one incoming edge from neighbor
+                if(degree[it] == 0)             // if neighbor now has zero incoming edges
+                    q.push(it);                 // it is ready to process
             }
         }
 
-        while(s.size()>0){
-            ans.push_back(s.top());
-            s.pop();
+        // If any node still has incoming edges → graph has a cycle
+        for(int i = 0; i < num; i++)
+        {
+            if(degree[i] != 0){
+                return {};                      // return empty if graph contains a cycle
+            }
         }
-        return ans;
+
+        return answer;                           // return a valid topological order
     }
 };
