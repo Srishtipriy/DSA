@@ -1,20 +1,17 @@
 class Solution {
 public:
-    unordered_map<int, int> dp;
+    unordered_map<int,int> dp;
+    int func(int n){
+        //base case
+        if(n==0) return 0;
+        if(n==1) return 1;
 
+        if(dp.find(n)!=dp.end()) 
+            return dp[n];               //n is found in the dp cache
+        
+       return dp[n]= 1 + min( (n%2) + func(n/2), (n%3) + func(n/3) );
+    }
     int minDays(int n) {
-        if (n <= 1) 
-            return n;
-
-        if (dp.count(n)) 
-            return dp[n];
-
-        // Option 1: Make n divisible by 2
-        int opt2 = (n % 2) + 1 + minDays(n / 2);        
-
-        // Option 2: Make n divisible by 3
-        int opt3 = (n % 3) + 1 + minDays(n / 3);
-
-        return dp[n] = min(opt2, opt3);
+        return func(n);
     }
 };
