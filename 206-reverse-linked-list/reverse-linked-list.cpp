@@ -15,10 +15,10 @@ public:
         ListNode* curr= head;
         while(curr != nullptr)
         {
-            ListNode* temp = curr->next;        //store next node
+            ListNode* next = curr->next;        //store next node
             curr->next = prev;                  //reverse the currentnodes pointer
             prev= curr;                         //move prev to curr node
-            curr= temp;                         //move curr to next node
+            curr= next;                         //move curr to next node
         }
         return prev;            //now head of reverse list is prev
     }
