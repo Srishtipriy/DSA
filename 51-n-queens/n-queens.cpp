@@ -23,11 +23,11 @@ public:
             ans.push_back(board);
             return ;
         }
-        for(int col= 0 ; col<n ; col++){                  //j here means "col"
-            if(isSafe(board , row , col , n )){                   //if true hua toh hi proceed and put "Q"
-                board[row][col] = 'Q';
+        for(int j= 0 ; j<n ; j++){                  //j here means "col"
+            if(isSafe(board , row , j , n )){                   //if true hua toh hi proceed and put "Q"
+                board[row][j] = 'Q';
                 solve(board, row+1 , n , ans);           //backtrack
-                board[row][col] = '.';               
+                board[row][j] = '.';               
             }
         }     
     }
