@@ -1,16 +1,19 @@
 class Solution {
 public:
     bool isPowerOfFour(int n) {
-        if (n == 1)
-            return true;
+        // Iterate through powers of 4 from 4^0 to 4^15
+        for (int i = 0; i <= 15; i++) {
+            int powerOfFour = pow(4, i);
+            
+            if (powerOfFour == n)
+                return true;
+            
+            // If the current power of four is greater than 'n', there's no need to continue
+            if (powerOfFour > n)
+                return false;
+        }
         
-        if (n <= 0)
-            return false; 
-        
-        // Calculate the logarithm of 'n' with base 4
-        double logarithmBase4 = log(n) / log(4);
-        
-        // Check if the result of the logarithmic operation is an integer
-        return (logarithmBase4 == (int)logarithmBase4);
+        // 'n' is not a power of four
+        return false;
     }
 };
