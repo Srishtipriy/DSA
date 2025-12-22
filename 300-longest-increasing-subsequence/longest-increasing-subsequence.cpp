@@ -1,26 +1,28 @@
-class Solution {
+class Solution {        //binary search = optimal approach
 public:
-    int solve(int n, vector<int>& nums, int curr, int prev, vector<vector<int>>& dp){
-        if(curr == n){
+    int binarysearch(int n, vector<int>& nums){
+        if(n == 0){
             return 0;
         }
-        if(dp[curr][prev +1] != -1){      //prev+1 kiya gaya becoz woh (-1se n-1) ja raha tha valid krne ke liye
-            return dp[curr][prev+1];
-        }
+        vector<int> ans;
+        ans.push_back(nums[0]);
 
-        //include
-        int take = 0;
-        if(prev == -1 || nums[prev]< nums[curr] ){
-            take = 1 + solve(n, nums, curr+1, curr, dp);
+        for(int i =1; i<n; i++){
+            if( nums[i] > ans.back() ){
+                ans.push_back(nums[i]);
+            }
+            else{
+                //findin the index of jusst bada ele in ans
+                int index = lower_bound(ans.begin(), ans.end() , nums[i] ) - ans.begin(); 
+                //address de dega - ans.begin() se;
+                ans[index] = nums[i];
+            }
         }
-        //exclude
-        int nottake = solve(n, nums, curr+1, prev, dp);
+        return ans.size();
 
-        return dp[curr][prev+1] = max(take, nottake);
     }
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(n+1, -1));
-        return solve (n, nums, 0, -1, dp);
+        return binarysearch(n , nums);
     }
 };
