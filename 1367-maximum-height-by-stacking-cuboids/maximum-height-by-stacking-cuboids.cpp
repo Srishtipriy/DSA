@@ -1,8 +1,7 @@
 class Solution {
 public:
-    int solve(int curr, int prev, vector<vector<int>>& cuboids, vector<vector<int>>& dp) {
-        if (curr == cuboids.size())
-            return 0;
+    int solve(int n, vector<vector<int>>& cuboids, int curr, int prev, vector<vector<int>>& dp) {
+        if (curr == n) return 0;
 
         if (dp[curr][prev + 1] != -1)
             return dp[curr][prev + 1];
@@ -13,28 +12,24 @@ public:
              cuboids[prev][1] <= cuboids[curr][1] &&
              cuboids[prev][2] <= cuboids[curr][2])) {
 
-            take = cuboids[curr][2] +                   //add height not +1
-                   solve(curr + 1, curr, cuboids, dp);
+            take = cuboids[curr][2] +
+                   solve(n, cuboids, curr + 1, curr, dp);
         }
 
-        int notTake = solve(curr + 1, prev, cuboids, dp);
+        int nottake = solve(n, cuboids, curr + 1, prev, dp);
 
-        return dp[curr][prev + 1] = max(take, notTake);
+        return dp[curr][prev + 1] = max(take, nottake);
     }
-    
-    int maxHeight(vector<vector<int>>& cuboids) {
-        
-        //sort the inside vector height at last-> sort all dimensions
-        for( auto &a : cuboids){
-            sort(a.begin(), a.end());
-        }
-        //now sort all cuboids basis of w and l
-        sort(cuboids.begin(), cuboids.end());
 
-        //using LIS solution
+    int maxHeight(vector<vector<int>>& cuboids) {
+        for (auto &c : cuboids)
+            sort(c.begin(), c.end());   // sort dimensions
+
+        sort(cuboids.begin(), cuboids.end()); // sort cuboids
+
         int n = cuboids.size();
         vector<vector<int>> dp(n, vector<int>(n + 1, -1));
 
-        return solve(0, -1, cuboids, dp);
+        return solve(n, cuboids, 0, -1, dp);
     }
 };
