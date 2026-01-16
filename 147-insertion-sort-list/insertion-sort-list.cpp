@@ -8,23 +8,31 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
 class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
-       vector<int>res;
-        while(head!=NULL){
-            res.push_back(head->val);
-            head=head->next;
+        if (!head || !head->next) return head;
+
+        ListNode dummy(0);  // dummy head of sorted list
+        ListNode* curr = head;
+
+        while (curr) {
+            ListNode* nextNode = curr->next;
+
+            // Find insertion position
+            ListNode* prev = &dummy;
+            while (prev->next && prev->next->val < curr->val) {
+                prev = prev->next;
+            }
+
+            // Insert curr between prev and prev->next
+            curr->next = prev->next;
+            prev->next = curr;
+
+            curr = nextNode;
         }
 
-        sort(res.begin(),res.end());
-        ListNode * dummy= new ListNode(-1);
-        ListNode *temp=dummy;
-        
-        for(int &a : res){
-            temp->next=new ListNode(a);
-            temp=temp->next;
-        }
-        return dummy->next;
+        return dummy.next;
     }
 };
