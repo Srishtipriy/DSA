@@ -1,37 +1,23 @@
 class Solution {
 public:
-    int getMaxPizza(int startPoint, int endPoint, vector<int>& slices, int remSlice, vector<vector<int>> &dp){
-
-        if(remSlice == 0 || startPoint > endPoint){
-            return 0;
-        }
-
-        if( dp[startPoint][remSlice] != -1 ){
-            return dp[startPoint][remSlice];
-        }
-
-        int eat_Pizza  = slices[startPoint] +  getMaxPizza(startPoint+2, endPoint, slices, remSlice - 1, dp);
-        int skip_Pizza = 0 + getMaxPizza(startPoint+1, endPoint, slices, remSlice, dp);
-
-        dp[startPoint][remSlice] = max(eat_Pizza, skip_Pizza);
+     int solveTab(int st,int l,vector<int>& slices,int k){
+        int n = l-st;
+        vector<vector<int>> dp(n+2,vector<int>(k+1,0));
         
-        return dp[startPoint][remSlice];
-
+        for(int i=n-1;i>=0;i--){
+            for(int j = 1;j<=k;j++){
+                int inc = slices[st+i] + dp[i+2][j-1];
+                int exc = dp[i+1][j];
+                dp[i][j] = max(inc,exc);
+            }
+        }
+        return dp[0][k];
     }
-
     int maxSizeSlices(vector<int>& slices) {
-        
-        int k = slices.size();
-        int n = k/3;
+        int n = slices.size();
 
-        vector<vector<int>> dp1(k, vector<int>(n+1, -1));
-        vector<vector<int>> dp2(k, vector<int>(n+1, -1));
-
-        int max_start = getMaxPizza(0, k - 2, slices, n, dp1);
-        int max_end   = getMaxPizza(1, k - 1, slices, n, dp2);
-
-
-        return max(max_start, max_end);
-
+        int case1 = solveTab( 0, n-1, slices, n/3 );
+        int case2 = solveTab( 1, n,   slices, n/3 ); 
+        return max(case1,case2);
     }
 };
