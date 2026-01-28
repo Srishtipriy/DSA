@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int solve(int start , int end ,vector<vector<int>> &dp){
+    int solveMem (int start , int end ,vector<vector<int>> &dp){
         if(start >= end)
             return 0;
 
@@ -10,14 +10,14 @@ public:
             return dp[start][end];
         }
         for(int i= start; i<=end ; i++){
-            ans  = min( ans , i + max( solve(start, i-1, dp), solve(i+1 , end , dp) ));
+            ans  = min( ans , i + max( solveMem (start, i-1, dp), solveMem (i+1 , end , dp) ));
         }
         dp[start][end] = ans;
         return dp[start][end];
     }
-    
+
     int getMoneyAmount(int n) {
         vector<vector<int>> dp(n+1 , vector<int>(n+1 , -1));
-        return solve( 1, n, dp);
+        return solveMem ( 1, n, dp);
     }
 };
