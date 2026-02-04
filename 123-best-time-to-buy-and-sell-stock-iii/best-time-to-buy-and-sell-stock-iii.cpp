@@ -1,32 +1,16 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
+        int buy1 = INT_MAX, buy2 = INT_MAX;
+        int profit1 = 0, profit2 = 0;
 
-        // dp[index][buy][limit]
-        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int>(3, 0)));
+        for (int p : prices) {      //p = actual price value not indexvalue jo normal for loop dega
+            buy1 = min(buy1, p);
+            profit1 = max(profit1, p - buy1);
 
-        for(int index = n-1; index >= 0; index--) {
-            for(int buy = 0; buy <= 1; buy++) {
-                for(int limit = 1; limit <= 2; limit++) { //limit ==0 wala toh return hi hoga
-
-                    int profit = 0;
-
-                    if(buy) {
-                        int buyKaro = -prices[index] + dp[index+1][0][limit];
-                        int skipKaro = dp[index+1][1][limit];
-                        profit = max(buyKaro, skipKaro);
-                    }
-                    else {
-                        int sellKaro = prices[index] + dp[index+1][1][limit-1];
-                        int skipKaro = dp[index+1][0][limit];
-                        profit = max(sellKaro, skipKaro);
-                    }
-
-                    dp[index][buy][limit] = profit;
-                }
-            }
+            buy2 = min(buy2, p - profit1);
+            profit2 = max(profit2, p - buy2);
         }
-        return dp[0][1][2];
+        return profit2;
     }
 };
