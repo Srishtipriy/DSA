@@ -8,7 +8,7 @@ public:
 
         for(int index = n-1; index >= 0; index--) {
             for(int buy = 0; buy <= 1; buy++) {
-                for(int limit = 1; limit <= 2; limit++) {
+                for(int limit = 1; limit <= 2; limit++) { //limit ==0 wala toh return hi hoga
 
                     int profit = 0;
 
