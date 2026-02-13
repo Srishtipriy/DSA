@@ -1,29 +1,41 @@
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
-        stack<int> st;
         int n = heights.size();
-        int maxArea = 0;
+        stack<int> st;
+        vector<int> PSE(n); //saving prev smaller 
+        vector<int> NSE(n); //saving next smaller
 
-        for(int i = 0; i <= n; i++) {
-            int currHeight = (i == n ? 0 : heights[i]);
 
-            while(!st.empty() && currHeight < heights[st.top()]) {
-                int height = heights[st.top()];
+
+        // Compute PSE
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && heights[st.top()] >= heights[i])   
                 st.pop();
 
-                int width;
-                if(st.empty())
-                    width = i;
-                else
-                    width = i - st.top() - 1;
-
-                maxArea = max(maxArea, height * width);
-            }
-
+            PSE[i] = st.empty() ? -1 : st.top();    // -1 is LB
             st.push(i);
         }
 
-        return maxArea;
+        // Reset stack for NSE
+        st = stack<int>();
+
+        // Compute NSE
+        for(int i = n-1; i >= 0; i--) {
+            while(!st.empty() && heights[st.top()] >= heights[i])   
+                st.pop();
+
+            NSE[i] = st.empty() ? n : st.top(); // n is right boundary RB here 6
+            st.push(i);
+        }
+
+        // Compute maximum area
+        int maxArea = 0;
+        for(int i = 0; i < n; i++) {
+            int area = heights[i] * (NSE[i] - PSE[i] - 1);          // area = b * h // Right boundary - LB -1
+            maxArea = max(maxArea, area);
+        }
+
+        return maxArea;         // har bar ke liye
     }
 };
