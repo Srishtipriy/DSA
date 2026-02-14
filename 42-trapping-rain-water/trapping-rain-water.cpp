@@ -2,36 +2,23 @@ class Solution {
 public:
     int trap(vector<int>& height) {
         int n = height.size();
-        if (n <= 2) return 0; 
-        int i=0, j=1;
-        int ans = 0;
-        int sum = 0;
-        while(j<n){
-            if(height[j]>=height[i]){
-                ans += (j-i-1)*(height[i]) - sum;
-                i=j;
-                j++;
-                sum = 0;
-                continue;
-            }
-            sum += height[j];
-            j++;
-        }
-        int k = n - 1;
-        j = n - 2;
-        sum = 0;
-        while (j >= i) {
-            if (height[j] >= height[k]) {
-                ans += (k - j - 1) * height[k] - sum;
-                k = j;
-                j--;
-                sum = 0;
-                continue;
-            }
-            sum += height[j];
-            j--;
-        }
+        long long ans = 0;
+        int l= 0 , r=n-1;
+        int lmax = 0 , rmax = 0;
 
+        while(l<r){
+            lmax = max(lmax , height[l]);
+            rmax = max(rmax , height[r]);
+
+            if(lmax < rmax){                //boundary is Left
+                ans += lmax - height[l];   //lmax hamesa largest val store karega so mini ans m 0 store hoga.
+                l++;
+            }
+            else{
+                ans += rmax - height[r];
+                r--;
+            }
+        }
         return ans;
     }
 };
