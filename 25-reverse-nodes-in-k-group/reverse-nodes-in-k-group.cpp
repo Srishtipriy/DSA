@@ -16,7 +16,7 @@ public:
         //checking if enough k nodes hai
         int count = 0;
         ListNode* temp = head;
-        while(temp != NULL && count <= k){
+        while(temp != NULL && count < k){
             temp = temp->next;
             count ++;
         }
