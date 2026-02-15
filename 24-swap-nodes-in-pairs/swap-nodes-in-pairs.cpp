@@ -12,22 +12,23 @@
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
+    if(head == NULL || head->next == NULL)    return head;
+        
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
 
-        ListNode dummy(0, head);
-        ListNode *prev = &dummy, *cur = head;
+    ListNode* prev = dummy;
+    while(prev->next != NULL && prev->next->next != NULL){
+        ListNode* curr = prev->next;        //first node
+        ListNode* forward = curr->next;     //second node
 
-        while (cur && cur->next) {
-            ListNode *npn = cur->next->next;
-            ListNode *second = cur->next;
+        //swapp
+        curr->next = forward->next;    // 1-> connected to 3 .........jo 4 ban jayega
+        forward->next = curr;          //2-> connected to  1
+        prev->next = forward;          //0-> connected to  2
 
-            second->next = cur;
-            cur->next = npn;
-            prev->next = second;
-
-            prev = cur;
-            cur = npn;
-        }
-
-        return dummy.next;        
+        prev = curr;  //prev moved forwarded to curr 
+    }
+    return dummy->next;     //jo head hoga
     }
 };
