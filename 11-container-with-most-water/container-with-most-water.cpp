@@ -19,7 +19,6 @@ public:
         return maxArea;
     }
     int maxArea(vector<int>& height) {
-        int n = solve(height);
-        return n;
+        return solve(height);
     }
 };
