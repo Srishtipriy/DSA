@@ -1,21 +1,18 @@
 class Solution {
 public:
     vector<int> countBits(int n) {
-        vector<int> ans;
-        string binary= "";
-        // if(n== 0)   return {0};
+        vector<int> temp(n+1);
 
-        for(int i = 0; i<=n ; i++){
-            if(n == 0)   return {0};
-            int I = i;
+        for(int i=0; i<n+1; i++){
+            int nums = i;       //no touching of i
             int count = 0;
-            while (I > 0) {
-                int bit = I % 2;           // remainder (0 or 1)
-                count += bit;
-                I /= 2;                    // divide by 2
+
+            while(nums){
+                nums = nums & (nums-1);
+                count++;
             }
-            ans.push_back(count);
+            temp[i] = count;        //yeh tabhi use karte h jab vec size fix ho
         }
-    return ans;
+        return temp;
     }
 };
