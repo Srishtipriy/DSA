@@ -18,19 +18,18 @@ public:
             
             // For moving left to right
             for (int i = left; i <= right; i++)
-            ans.push_back(mat[top][i]);
+                 ans.push_back(mat[top][i]);
             top++;
 
             // For moving top to bottom.
             for (int i = top; i <= bottom; i++)
-            ans.push_back(mat[i][right]);
+                 ans.push_back(mat[i][right]);
             right--;
             
-            // For moving right to left.
+            // For moving right to left. bottom row
             if (top <= bottom) {
             for (int i = right; i >= left; i--)
-            ans.push_back(mat[bottom][i]);
-
+                ans.push_back(mat[bottom][i]);
             bottom--;
             }
 
@@ -38,7 +37,6 @@ public:
             if (left <= right) {
             for (int i = bottom; i >= top; i--)
                 ans.push_back(mat[i][left]);
-
             left++;
             }
         }
