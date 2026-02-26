@@ -25,12 +25,12 @@ public:
             vector<int> level;
 
             for (int i = 0; i < levelSize; ++i) {
-                TreeNode* temp = q.front();
+                TreeNode* node = q.front();
                 q.pop();
-                level.push_back(temp->val);
+                level.push_back(node->val);
 
-                if (temp->left) q.push(temp->left);
-                if (temp->right) q.push(temp->right);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
 
             result.push_back(level);
