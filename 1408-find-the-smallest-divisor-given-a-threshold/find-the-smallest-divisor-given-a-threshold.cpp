@@ -3,11 +3,11 @@ public:
     int smallestDivisor(vector<int>& A, int threshold) {
         int left = 1;
         int right = 1e6;
-        int m, sum ;
+        int m;
 
         while (left < right) {
             m = (left + right) / 2;
-            sum = 0;
+            int sum = 0;
             for (int i : A)
                 sum += (i + m - 1) / m;
             if (sum > threshold)
