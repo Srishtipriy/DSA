@@ -11,14 +11,11 @@
 class Solution {
 public:
     ListNode* removeElements(ListNode* head, int val) {
-        //ListNode* dummy = new ListNode(0);            //isse start head automatic cover ho jayega
-        //dummy->next = head;
-        ListNode* temp = head;
+        ListNode* dummy = new ListNode(0);            //isse start head automatic cover ho jayega
+        dummy->next = head;
+        ListNode* temp = dummy;
 
-        while(head != NULL && head->val == val)         //start node pe val ho
-            head = head->next;  
-
-        while(temp != NULL && temp->next != NULL){      //lastnode cover h last it 5 tak hoga temp->next != NULL
+        while(temp->next != NULL){      //lastnode cover h last it 5 tak hoga temp->next != NULL
             if(temp->next->val == val){
                 temp->next = temp->next->next;
             }
@@ -26,6 +23,6 @@ public:
                 temp = temp->next;
             }
         }
-        return head;
+        return dummy->next;
     }
 };
