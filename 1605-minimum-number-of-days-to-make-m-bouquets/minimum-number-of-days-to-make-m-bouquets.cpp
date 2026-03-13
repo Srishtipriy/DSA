@@ -1,40 +1,36 @@
 class Solution {
-public:
-    bool isItPossible(int n, vector<int>& bloomDay, int b, int k, int m){
-        int countBoquests = 0;
-        int countFlowers = 0;
-        int i = 0;
-        while(i < n){
-            if(bloomDay[i] <= m)  countFlowers++;       //if arr mai day chota hai m se
-            else countFlowers = 0;
+private:
+    bool canMake(vector<int>& bloomDay, int m, int k, int day){   //day == mid
+        int bouquets = 0, flowers = 0;
 
-            if(countFlowers == k){
-                countBoquests++;            // 1 bouquet ready now flowerseq again 0 se start karo
-                countFlowers = 0;
+        for(int i = 0; i < bloomDay.size(); i++){
+            if(bloomDay[i] <= day){
+                flowers++;
+                if(flowers == k){
+                    bouquets++;
+                    flowers = 0; }
             }
-            i++;        
+            else{
+                flowers = 0;
+            }
         }
-        if(countBoquests >= b) return true;             //req no. of bouquets prep ho gaye 
-
-        return false;                                   // req b prep nhi hue
+        return bouquets >= m;
     }
-    int minDays(vector<int>& bloomDay, int b, int k) {    
-        int n = bloomDay.size(), m;
-        if(1L*b*k > n) return -1;
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        if((long long)m * k > bloomDay.size())
+            return -1;
 
-        int l = 1, h = 1e9;
-        int ans = INT_MAX;
+        int l = *min_element(bloomDay.begin(), bloomDay.end());
+        int r = *max_element(bloomDay.begin(), bloomDay.end());
 
-        while(l <= h){
-            m = (l+h)/2;
-            bool possible = isItPossible(n,bloomDay, b, k, m);
-            if(possible){
-                ans = min(ans, m);
-                h = m-1;
-            }else{
-                l = m+1;
-            }
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(canMake(bloomDay, m, k, mid))
+                r = mid - 1;
+            else
+                l = mid + 1;
         }
-        return ans;
+        return l;
     }
 };
