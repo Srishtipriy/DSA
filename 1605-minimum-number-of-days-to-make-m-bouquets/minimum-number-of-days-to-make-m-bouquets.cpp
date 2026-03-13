@@ -18,7 +18,8 @@ private:
     }
 public:
     int minDays(vector<int>& bloomDay, int m, int k) {
-        if((long long)m * k > bloomDay.size())
+        long long need = 1LL*m*k;
+        if(need > bloomDay.size())
             return -1;
 
         int l = *min_element(bloomDay.begin(), bloomDay.end());
