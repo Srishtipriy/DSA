@@ -1,17 +1,42 @@
 class Solution {
 public:
-    bool strongPasswordCheckerII(string p) {
-        if(size(p) < 8) return false;
-        bool low = false , upper = false ,digit = false ,special = false;
-        for(auto c : p){
-            if(c>='a' and c<='z') low = true;
-            else if(c>='A' and c <='Z') upper = true;
-            else if(isdigit(c)) digit = true;
-            else special = true;
+    bool strongPasswordCheckerII(string password) {
+        bool atleast8 = false;
+        bool lowercase = false;
+        bool uppercase = false;
+        bool digit = false;
+        bool special_char = false;
+        string special_charac = "!@#$%^&*()-+";
+
+        int n  = password.length();
+        if(n>=8){
+            atleast8 = true;
+        }else{
+            return false;
         }
-        //Check the 6th condition
-        for(int i=0;i+1<size(p);i++) if(p[i] == p[i+1]) return false;
-        if(low and upper and digit and special) return true;
-        return false;
+
+        for(int i = 1; i< n ; i++){
+            if(password[i]==password[i-1]){
+                return false;
+            }
+        }
+
+        for(char c : password){
+            if( c >= 'A' && c<= 'Z' ){
+                uppercase= true;
+            }else if( c >= 'a' && c<= 'z' ){
+                lowercase= true;
+            }else if(special_charac.find(c) != string::npos){
+                special_char= true;
+            }else if(c >= '0' && c<= '9'){
+                digit = true;
+            }
+        }
+
+        if(!uppercase || !lowercase || !digit || !special_char){
+            return false;
+        }
+ 
+        return true;
     }
 };
