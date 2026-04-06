@@ -9,58 +9,51 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-    
-
 class Solution {
 public:
+    unordered_map<int, vector<int>> graph;
+
     int amountOfTime(TreeNode* root, int start) {
-        unordered_map<int, unordered_set<int>> map;
-        convert(root, 0, map);
+        constructGraph(root);
+
         queue<int> q;
         q.push(start);
-        int minute = 0;
+
         unordered_set<int> visited;
-        visited.insert(start);
+
+        int minutesPassed = -1;
 
         while (!q.empty()) {
-            int levelSize = q.size();
-            while (levelSize > 0) {
-                int current = q.front();
+            ++minutesPassed;
+            for (int levelSize = q.size(); levelSize > 0; --levelSize) {
+                int currentNode = q.front();
                 q.pop();
-
-                for (int num : map[current]) {
-                    if (visited.find(num) == visited.end()) {
-                        visited.insert(num);
-                        q.push(num);
+                visited.insert(currentNode);
+                for (int adjacentNode : graph[currentNode]) {
+                    if (!visited.count(adjacentNode)) {
+                        q.push(adjacentNode);
                     }
                 }
-                levelSize--;
             }
-            minute++;
         }
-        return minute - 1;
+
+        return minutesPassed;
     }
 
-    void convert(TreeNode* current, int parent, unordered_map<int, unordered_set<int>>& map) {
-        if (current == nullptr) {
-            return;
-        } 
-        if (map.find(current->val) == map.end()) {
-            map[current->val] = unordered_set<int>();
+    void constructGraph(TreeNode* root) {
+        if (!root) return;
+
+        if (root->left) {
+            graph[root->val].push_back(root->left->val);
+            graph[root->left->val].push_back(root->val);
         }
-        unordered_set<int>& adjacentList = map[current->val];
-        if (parent != 0) {
-            adjacentList.insert(parent);
-        } 
-        if (current->left != nullptr) {
-            adjacentList.insert(current->left->val);
-        } 
-        if (current->right != nullptr) {
-            adjacentList.insert(current->right->val);
+
+        if (root->right) {
+            graph[root->val].push_back(root->right->val);
+            graph[root->right->val].push_back(root->val);
         }
-        convert(current->left, current->val, map);
-        convert(current->right, current->val, map);
+
+        constructGraph(root->left);
+        constructGraph(root->right);
     }
 };
-
-
