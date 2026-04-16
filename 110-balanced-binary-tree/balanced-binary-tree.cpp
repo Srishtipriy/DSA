@@ -11,28 +11,20 @@
  */
 class Solution {
 public:
-    pair<bool,int > isBalancedfast(TreeNode* root){
-        if(root== NULL){
-            pair<bool, int> p =make_pair(true , 0);                //bool=first-> is subtree balanced?
-            return p;                                              //int second->Height of subtree
-        }
-        pair<bool , int> left = isBalancedfast(root->left);
-        pair<bool , int> right = isBalancedfast(root->right);               
+    int checkheight(TreeNode* root){
+        if(root == NULL)
+            return 0;
+        int l = checkheight(root->left);
+        if( l == -1)   return -1;
+        
+        int r = checkheight(root->right);
+        if( r == -1)   return -1;
 
-        bool leftans = left.first;
-        bool rightans = right.first;
-        bool diff = abs(left.second - right.second) <=1;           // bas iss line ke liye ans.second ka use h 
+        if( abs( r-l ) > 1)      return -1;
 
-        pair< bool , int> ans;
-        ans.second = max(left.second , right.second)+ 1;
-        if( leftans && rightans && diff)
-            ans.first = true;
-        else    
-            ans.first = false;
-        return ans;
+        return 1+ max(l,r);
     }
-
     bool isBalanced(TreeNode* root) {
-        return isBalancedfast(root).first;
+        return checkheight(root) != -1; 
     }
 };
