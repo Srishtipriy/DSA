@@ -1,15 +1,18 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int n= nums.size();
-        int k = 1;
+        unordered_set<int> seen;
+        int index = 0;
+        
+        for(int num : nums){
+            if(seen.find(num) == seen.end()){           //agar woh no nahi mila seen.end() is a end pointer jo last ele ke bhi baad mai point krta ho
+            
+                seen.insert(num);
+                nums[index] = num;
+                index++;
 
-        for(int i=1; i<n ;i++){
-            if(nums[i-1] != nums[i]){
-                nums[k]=nums[i];
-                k++;
             }
         }
-        return k;
+        return index;
     }
 };
