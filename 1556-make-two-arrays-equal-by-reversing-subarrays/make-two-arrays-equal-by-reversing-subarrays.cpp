@@ -1,8 +1,13 @@
 class Solution {
 public:
-    bool canBeEqual(vector<int>& target, vector<int>& A) {
-        
-        return unordered_multiset<int>(A.begin(), A.end()) == unordered_multiset<int>(target.begin(),target.end());
+    bool canBeEqual(vector<int>& target, vector<int>& arr) {
+        sort(target.begin(),target.end());
+        sort(arr.begin(),arr.end());
+        if(target==arr){
+            return true;
+        }
+        return false;
 
+        
     }
 };
