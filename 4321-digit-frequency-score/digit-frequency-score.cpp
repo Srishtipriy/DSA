@@ -2,7 +2,6 @@ class Solution {
 public:
     int digitFrequencyScore(int n) {
         int sum =0;
-        string k = to_string(n);
         unordered_map<int,int> mp;
 
         while(n > 0){
